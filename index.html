@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数字水印公信平台</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <a class="skip-link" href="#page-container">跳过导航，直接到内容</a>
+    <nav class="navbar" role="navigation" aria-label="主导航">
+        <div class="logo" role="banner">数字水印公信平台</div>
+        <div class="nav-links" role="menubar">
+            <a role="menuitem" href="#home">首页</a>
+            <a role="menuitem" href="#upload">作品存证</a>
+            <a role="menuitem" href="#verify">版权查验</a>
+            <a role="menuitem" href="#monitor">侵权监测</a>
+        </div>
+    </nav>
+    
+    <!-- 页面容器 -->
+    <main id="page-container">
+        <!-- 首页 -->
+        <section id="home-page" class="page active" role="region" aria-label="首页">
+            <div class="hero">
+                <h1>为数字时代，铸造可信的<span class="highlight">版权身份证</span></h1>
+                <p>基于数字水印+区块链，提供全链路公信服务</p>
+                <div class="cta-buttons">
+                    <button class="btn-primary" onclick="navigateTo('#upload')">立即为作品存证</button>
+                    <button class="btn-secondary" onclick="navigateTo('#verify')">查验作品版权</button>
+                </div>
+            </div>
+            <!-- 数据看板 -->
+            <div class="dashboard">
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-works">0</div>
+                    <div class="stat-label">已保护作品</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-blocks">0</div>
+                    <div class="stat-label">区块高度</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-warnings">0</div>
+                    <div class="stat-label">风险预警</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-partners">0</div>
+                    <div class="stat-label">合作机构</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 上传存证页面 -->
+        <section id="upload-page" class="page" role="region" aria-label="创作存证页面">
+            <h2>为作品铸造"身份证"</h2>
+            <div class="upload-layout">
+                <div id="upload-zone" class="upload-zone" role="button" aria-label="上传作品" tabindex="0">拖拽或点击上传作品（支持 JPG / PNG / MP4 / PDF）</div>
+                <div class="meta-form">
+                    <label>标题：<input id="title-input" type="text" placeholder="作品标题"></label>
+                    <label>作者：<input id="author-input" type="text" placeholder="作者姓名"></label>
+                    <label>创作时间：<input id="date-input" type="date"></label>
+                    <button id="toggle-advanced" class="btn" aria-expanded="false" aria-controls="advanced-panel">高级选项 ▾</button>
+                    <div id="advanced-panel" class="advanced-panel">
+                        <label><input id="opt-bilateral" type="checkbox"> 启用双向水印协议</label>
+                        <label><input id="opt-chain" type="checkbox" checked> 同步存证至司法区块链</label>
+                        <label><input id="opt-monitor" type="checkbox"> 立即启动全网侵权监测</label>
+                    </div>
+                    <div class="form-actions">
+                        <button onclick="navigateTo('#home')" class="btn">返回</button>
+                        <button class="btn-primary" onclick="simulateFileUpload()">立即存证</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 存证证书页面 -->
+        <section id="certificate-page" class="page" role="region" aria-label="存证证书页面">
+            <div class="certificate">
+                <div class="certificate-header">
+                    <h3>数字作品版权存证证书</h3>
+                    <div id="cert-id">证书编号: —</div>
+                </div>
+                <div class="certificate-body">
+                    <div class="thumb" id="cert-thumb" role="img" aria-label="作品缩略图">作品缩略图</div>
+                    <div class="cert-info">
+                        <div>作品：<span id="cert-title">—</span></div>
+                        <div>作者：<span id="cert-author">—</span></div>
+                        <div>存证时间：<span id="cert-time">—</span></div>
+                        <div>数字指纹：<code id="cert-hash">—</code></div>
+                    </div>
+                </div>
+                <div class="blockchain-visual" id="cert-blocks"></div>
+                <div class="cert-actions">
+                    <button class="btn">下载证书PDF</button>
+                    <button class="btn">分享</button>
+                    <button class="btn-primary" onclick="navigateTo('#monitor')">查看监测报告</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 版权查验页面 -->
+        <section id="verify-page" class="page" role="region" aria-label="版权查验页面">
+            <h2>安心使用，先查版权</h2>
+            <div class="verify-layout">
+                <div id="verify-upload-zone" class="upload-zone" role="button" aria-label="上传要查验的文件" tabindex="0">拖拽或点击上传要查验的文件</div>
+                <div class="verify-controls">
+                    <label>或输入作品特征码：<input id="wid-input" placeholder="WID:A1B2-C3D4-E5F6"></label>
+                    <button class="btn-primary" onclick="simulateVerify()">开始查验</button>
+                    <div id="verify-history" class="verify-history"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 查验结果页面 -->
+        <section id="result-page" class="page" role="region" aria-label="查验结果页面">
+            <div class="alert-banner" id="result-alert" role="alert" aria-live="assertive" style="display:none;">⚠️ 检测到该图片包含受保护的数字水印！</div>
+            <div class="compare-view">
+                <div class="compare-col">
+                    <h4>您上传的图片</h4>
+                        <div class="thumb" id="uploaded-thumb" role="img" aria-label="上传缩略图">上传缩略图</div>
+                    <div id="uploaded-status">状态：—</div>
+                </div>
+                <div class="compare-col">
+                    <h4>平台存证作品</h4>
+                    <div class="thumb" id="stored-thumb" role="img" aria-label="原图缩略图">原图缩略图</div>
+                    <div>存证人：<span id="result-owner">—</span></div>
+                    <div>水印ID：<span id="result-watermark">—</span></div>
+                </div>
+            </div>
+            <div class="timeline" id="result-timeline"></div>
+            <div class="result-actions"><button class="btn-primary">一键生成证据包</button></div>
+        </section>
+        
+        <!-- 监测报告页面 -->
+        <section id="monitor-page" class="page">
+            <h2>侵权监测报告</h2>
+            <div class="report-header">
+                <div class="report-title">作品：<span id="report-work">—</span></div>
+                <div class="report-tools"><button class="btn">刷新</button><button class="btn">导出报告</button></div>
+            </div>
+            <div class="report-overview">
+                <div class="stat-card"><div class="stat-number" id="mon-acc">0</div><div class="stat-label">累计侵权</div></div>
+                <div class="stat-card"><div class="stat-number" id="mon-warn">0</div><div class="stat-label">已发警告</div></div>
+                <div class="stat-card"><div class="stat-number" id="mon-loss">0</div><div class="stat-label">预估损失</div></div>
+                <div class="stat-card"><div class="stat-number" id="mon-coverage">0%</div><div class="stat-label">监测覆盖率</div></div>
+            </div>
+            <div class="monitor-controls">
+                <input id="monitor-search" placeholder="按 URL 或 关键字搜索" aria-label="搜索侵权记录">
+                <select id="monitor-city" aria-label="筛选城市">
+                    <option value="">全部城市</option>
+                </select>
+                <div class="monitor-actions">
+                    <button id="monitor-refresh" class="btn">刷新</button>
+                </div>
+            </div>
+
+            <div class="monitor-grid">
+                <div class="monitor-left">
+                    <canvas id="monitor-chart" width="600" height="160" aria-label="侵权趋势图"></canvas>
+                    <div id="infringement-map" class="infringement-map" aria-hidden="false"></div>
+                    <div class="map-legend"><span class="dot danger"></span> 高风险 <span class="dot medium"></span> 中风险 <span class="dot low"></span> 低风险</div>
+                </div>
+                <div class="monitor-right">
+                    <div class="table-wrap">
+                        <table id="infringement-table" class="infringement-table" aria-describedby="infringement-list">
+                            <thead><tr><th>时间</th><th>URL</th><th>城市</th><th>风险</th><th>操作</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <button id="prev-page" class="btn">上一页</button>
+                        <span id="page-info">1 / 1</span>
+                        <button id="next-page" class="btn">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 模态框容器 -->
+    <div id="modal-container"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
