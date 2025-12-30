@@ -9,7 +9,7 @@
     <!-- 顶部导航 -->
     <a class="skip-link" href="#page-container">跳过导航，直接到内容</a>
     <nav class="navbar" role="navigation" aria-label="主导航">
-        <div class="logo" role="banner">数字水印公信平台</div>
+        <div class="logo" role="banner">知信方舟</div>
         <div class="nav-links" role="menubar">
             <a role="menuitem" href="#home">首页</a>
             <a role="menuitem" href="#upload">作品存证</a>
@@ -55,7 +55,11 @@
         <section id="upload-page" class="page" role="region" aria-label="创作存证页面">
             <h2>为作品铸造"身份证"</h2>
             <div class="upload-layout">
-                <div id="upload-zone" class="upload-zone" role="button" aria-label="上传作品" tabindex="0">拖拽或点击上传作品（支持 JPG / PNG / MP4 / PDF）</div>
+                <div id="upload-zone" class="upload-zone" role="button" aria-label="上传作品" tabindex="0">
+                    <div class="upload-instructions">拖拽或点击上传作品（支持 JPG / PNG / MP4 / PDF）</div>
+                    <div class="preview" aria-live="polite">未选择文件</div>
+                </div>
+                <input id="file-input" type="file" accept="image/*,video/*,application/pdf" style="display:none">
                 <div class="meta-form">
                     <label>标题：<input id="title-input" type="text" placeholder="作品标题"></label>
                     <label>作者：<input id="author-input" type="text" placeholder="作者姓名"></label>
@@ -68,7 +72,7 @@
                     </div>
                     <div class="form-actions">
                         <button onclick="navigateTo('#home')" class="btn">返回</button>
-                        <button class="btn-primary" onclick="simulateFileUpload()">立即存证</button>
+                        <button id="submit-attest" class="btn-primary" onclick="createAttestation()">立即存证</button>
                     </div>
                 </div>
             </div>
@@ -103,7 +107,10 @@
         <section id="verify-page" class="page" role="region" aria-label="版权查验页面">
             <h2>安心使用，先查版权</h2>
             <div class="verify-layout">
-                <div id="verify-upload-zone" class="upload-zone" role="button" aria-label="上传要查验的文件" tabindex="0">拖拽或点击上传要查验的文件</div>
+                <div id="verify-upload-zone" class="upload-zone" role="button" aria-label="上传要查验的文件" tabindex="0">
+                    <div class="upload-instructions">拖拽或点击上传要查验的文件</div>
+                    <div class="preview" aria-live="polite">未选择文件</div>
+                </div>
                 <div class="verify-controls">
                     <label>或输入作品特征码：<input id="wid-input" placeholder="WID:A1B2-C3D4-E5F6"></label>
                     <button class="btn-primary" onclick="simulateVerify()">开始查验</button>
@@ -145,7 +152,8 @@
                 <div class="stat-card"><div class="stat-number" id="mon-loss">0</div><div class="stat-label">预估损失</div></div>
                 <div class="stat-card"><div class="stat-number" id="mon-coverage">0%</div><div class="stat-label">监测覆盖率</div></div>
             </div>
-            <div class="monitor-controls">
+                <div class="monitor-controls">
+                <select id="monitor-work-select" aria-label="选择作品"></select>
                 <input id="monitor-search" placeholder="按 URL 或 关键字搜索" aria-label="搜索侵权记录">
                 <select id="monitor-city" aria-label="筛选城市">
                     <option value="">全部城市</option>

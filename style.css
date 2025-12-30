@@ -30,6 +30,9 @@
     cursor: pointer;
     transition: all 0.3s;
 }
+
+/* 保证预览图片不会溢出遮挡其他控件 */
+.upload-zone{position:relative;overflow:hidden}
 .upload-zone.drag-over {
     border-color: var(--accent-gold);
     background: rgba(212, 175, 55, 0.1);
@@ -88,6 +91,14 @@
 .certificate-body{display:flex;gap:20px;align-items:center}
 .thumb{width:160px;height:100px;background:#f0f0f0;border:1px dashed #ccc;display:flex;align-items:center;justify-content:center}
 
+/* 上传区内的预览图片避免遮挡并保持响应 */
+.upload-zone .preview{min-height:100px}
+.upload-zone .preview img{display:block;max-width:160px;max-height:120px;margin:8px auto;pointer-events:none}
+
+/* 证书与比对视图内缩略图限制，避免遮挡控件 */
+.certificate .thumb, .compare-col .thumb, #uploaded-thumb, #stored-thumb { overflow:hidden }
+.certificate .thumb img, .compare-col .thumb img, #uploaded-thumb img, #stored-thumb img { display:block; width:100%; height:auto; max-height:240px; object-fit:contain }
+
 /* 过渡与偏好减动画 */
 *{transition:background-color 220ms ease, color 220ms ease, transform 220ms ease}
 @media (prefers-reduced-motion: reduce){*{transition:none;animation:none}}
@@ -140,6 +151,11 @@
 /* responsive */
 @media(max-width:900px){
     .monitor-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:700px){
+    .upload-layout{flex-direction:column}
+    .meta-form{width:100%}
 }
 
 
