@@ -125,7 +125,11 @@ function setupUploadPage() {
                     if(p) p.innerHTML = `<img src='${currentUpload.fileDataURL}' alt='preview' style='max-width:160px;max-height:120px'/>`;
                 } else if(currentUpload.context === 'verify'){
                     const p = document.querySelector('#verify-upload-zone .preview');
-                    if(p) p.innerHTML = `<img src='${currentUpload.fileDataURL}' alt='preview' style='max-width:160px;max-height:120px'/>`;
+                    if(p){ p.innerHTML = `<img src='${currentUpload.fileDataURL}' alt='preview' style='max-width:160px;max-height:120px'/>`; p.style.display = ''; }
+                } else {
+                    // fallback: populate both previews
+                    const pu = document.querySelector('#upload-zone .preview'); if(pu) pu.innerHTML = `<img src='${currentUpload.fileDataURL}' alt='preview' style='max-width:160px;max-height:120px'/>`;
+                    const pv = document.querySelector('#verify-upload-zone .preview'); if(pv){ pv.innerHTML = `<img src='${currentUpload.fileDataURL}' alt='preview' style='max-width:160px;max-height:120px'/>`; pv.style.display = ''; }
                 }
             };
             reader.readAsDataURL(f);
